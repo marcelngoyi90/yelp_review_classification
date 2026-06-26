@@ -1,63 +1,56 @@
-# yelp_review_classification
-This project builds a sentiment classification model using Yelp restaurant reviews.   The goal is to automatically determine whether a review expresses **positive** or **negative** sentiment.   We focus specifically on **1-star** (negative) and **5-star** (positive) reviews to create a clean binary classification problem.
+# Yelp Review Sentiment Classification
+
+A Natural Language Processing project that classifies Yelp restaurant reviews as positive or negative using Bag-of-Words features and a Multinomial Naive Bayes classifier.
+
+## Project Goal
+
+The goal is to build a clean binary sentiment classifier using Yelp reviews. The project focuses on 1-star reviews as negative examples and 5-star reviews as positive examples, creating a clear supervised learning problem.
 
 ## Dataset
 
-The dataset used in this project is the standard **Yelp reviews dataset**, which includes:
+The project uses Yelp review data containing review text and star ratings. For this binary classification task:
 
-- The full text of each review  
-- A star rating from **1 to 5**  
+- 1-star reviews are labeled as negative.
+- 5-star reviews are labeled as positive.
+- 2, 3, and 4-star reviews are excluded to reduce label ambiguity.
 
-Although the dataset contains all star values (1–5), this project focuses on a **binary classification** problem by selecting only:
+## Tech Stack
 
-- **1-star reviews** → considered **negative**
-- **5-star reviews** → considered **positive**
+- Python
+- Pandas, NumPy
+- Scikit-learn
+- NLTK
+- Matplotlib, Seaborn
+- Jupyter Notebook
 
-## Project Objectives
+## Workflow
 
-The notebook walks through the complete ML pipeline:
+1. Load and inspect the Yelp review dataset.
+2. Explore review length and rating distributions.
+3. Filter the dataset to 1-star and 5-star reviews.
+4. Clean text by removing punctuation, lowercasing, tokenizing, and removing stopwords.
+5. Vectorize text with `CountVectorizer`.
+6. Train a Multinomial Naive Bayes classifier.
+7. Evaluate performance using a classification report and confusion matrix.
 
-### **1. Data Loading & Exploration**
-- Inspect dataset structure  
-- View class distribution  
-- Visualize review length distribution globally and per star rating  
+## Key Finding
 
-### **2. Feature Engineering**
-- Create a simple numerical feature: `length` of each review  
-- Plot histograms and facet plots  
+A TF-IDF experiment reduced model performance in this notebook. For this dataset and Naive Bayes setup, raw word-count features performed better because repeated sentiment words such as "great", "love", "bad", and "terrible" carry strong predictive signal.
 
-### **3. Text Cleaning**
-A custom cleaning function is used to:
-- Remove punctuation  
-- Convert to lowercase  
-- Tokenize  
-- Remove English stopwords  
+## How to Run
 
-### **4. Text Vectorization (Bag-of-Words)**
-- Convert text into word-count vectors using `CountVectorizer`  
-- Apply the cleaned tokens as the analyzer  
+```bash
+git clone https://github.com/marcelngoyi90/yelp_review_classification.git
+cd yelp_review_classification
+pip install pandas numpy scikit-learn nltk matplotlib seaborn jupyter
+jupyter notebook
+```
 
-### **5. Model Training**
-Train a **Multinomial Naive Bayes** classifier using:
-- 80% training data  
-- 20% testing data  
+Open the notebook and run the cells in order.
 
-### **6. Evaluation**
-- Classification report (precision, recall, f1-score)  
-- Confusion matrix visualization
+## Future Improvements
 
-## Important Finding — TF-IDF **reduced** performance
-
-The notebook also includes an optional experiment using **TF-IDF (TfidfTransformer)** on top of the word counts.
-
- **Result:** TF-IDF significantly **worsened** the model’s performance.
-
-This is expected in some Naive Bayes cases because:
-
-- TF-IDF down-weights frequent words too aggressively  
-- Naive Bayes performs best with **raw frequency counts**, not normalized features  
-- Yelp reviews contain many repeated opinion words (“good”, “bad”, “love”, “terrible”) which NB handles well with raw counts  
-
-For this project, the **CountVectorizer (Bag-of-Words)** model provides **much higher accuracy**.
-
----
+- Add logistic regression and linear SVM baselines.
+- Compare CountVectorizer, TF-IDF, and transformer embeddings.
+- Add cross-validation and hyperparameter tuning.
+- Convert the notebook into a reusable training script.
